@@ -57,6 +57,50 @@
 
   这样子就会实现子弹打到怪物，怪物死亡，子弹爆炸的效果。
 - 现在，又出现了新的问题，爆炸效果底色是黑的，不合适，我们该怎么办呢？
+
   回到图层界面，点击爆炸，在左边的属性栏里找到Effects,
   将Blend mode 从normal改为additive。
-- 
+- 若按照之前的设定，怪物会自行移动到边界，然后离开画面，这样就会使得游戏很快就失去了体验，所以我们可以通过设置，让怪物随机出现，并一直朝玩家移动。
+
+  条件1：System->On start of layout
+
+  行为1：怪物->Set angle->random(360)
+
+  条件2：怪物->is outside layout
+
+  行为2：怪物->Set angle toward->玩家.X 玩家.Y
+- 如果怪物一枪一个，的确很有快感，但是难度就会降低很多，所以我们应尝试着将怪物设定为多枪才能杀死一个。
+  - 首先，我们要先确定实例变量health：回到图层界面，点击怪物，在左侧的属性栏里找到Instance variables，添加一个变量health并将数值设定为5.
+  ![编辑变量](https://www.scirra.com/images/articles/instvars.png)
+  - 接着，更改之前的操作，将怪物设定为子弹接触一次扣一血。如图，右键单击怪物Destory的行为，选择Repalce action，将行为改为：怪物->Subtract from->Instance variable "health",value 1。
+
+  ![更改操作](https://www.scirra.com/images/articles/replaceaction.png)
+  - 此时当怪物血量减少到0时，它还是存在，所以我们需要创立一个新的条件和行为来使怪物消失在画面中。
+
+    条件：怪物->Compare instance variable -> health, Less or equal, 0
+    
+    行为：Monster -> Spawn another object -> Explosion, layer 1 ;
+          Monster -> Destroy 
+  - 为了游戏的可持续性，我们需要让怪物可以源源不断的出现，所以我们应添加一个新的条件及其行为。
+
+    条件：System->Every X seconds->2.5
+
+    行为：System->create object->怪兽，layer 1,X 1400,Y random(1024)
+  - 游戏中玩家自然不应该设置为不死的，所以我们需要设置玩家的死亡条件。
+    
+    条件：怪物->On collision with another object->玩家
+
+    行为：玩家->Destroy
+5. 游戏到此其实就已经制作完成了，但是没有显示分数，我们无法知道自己到底击杀了多少怪物，更无法跟朋友们比较，所以此时我们应建立一个记分器。
+- 右键单击事件编辑器的空白处，选择Add global variable,将其命名为score。
+
+![Add global variable](https://www.scirra.com/images/articles/addglobal.png)
+![结果显示](https://www.scirra.com/images/articles/globalscorevar.png)
+- 根据此变量的要求，我们可以在怪物health<=0的条件下添加一行为：System->Add to->Score,value 1
+- 最后，我们要让分数显现出来，并且始终停留在同一个位置。
+
+  回到图层界面，添加一个新的图层HUD，双击空白处，添加文本TEXT，将左侧的属性栏的Parallax设置为0，0。
+  然后再次回到事件编辑器，在System->every tick处新增一个行为：Text->Set text->"Score: " & score
+
+  要记得改变一下文本的颜色和大小，使之易于观察。
+6. [](http://m.qpic.cn/psb?/V121xkN20HK0Yv/IqtK7XUEeFNYP.G*uxGA9vabYEUwzve83koqMtKEoTE!/b/dFIBAAAAAAAA&bo=NgH6ADYB.gACeV0!&rf=viewer_4)
