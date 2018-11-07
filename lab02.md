@@ -103,4 +103,5 @@
   然后再次回到事件编辑器，在System->every tick处新增一个行为：Text->Set text->"Score: " & score
 
   要记得改变一下文本的颜色和大小，使之易于观察。
-6. [](http://m.qpic.cn/psb?/V121xkN20HK0Yv/IqtK7XUEeFNYP.G*uxGA9vabYEUwzve83koqMtKEoTE!/b/dFIBAAAAAAAA&bo=NgH6ADYB.gACeV0!&rf=viewer_4)
+
+6. [gif](http://m.qpic.cn/psb?/V121xkN20HK0Yv/IqtK7XUEeFNYP.G*uxGA9vabYEUwzve83koqMtKEoTE!/b/dFIBAAAAAAAA&bo=NgH6ADYB.gACeV0!&rf=viewer_4)
